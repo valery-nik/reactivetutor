@@ -8,6 +8,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -91,6 +93,62 @@ public class TestFluxApi {
                 .log()
                 .take(3);
         flux.subscribe();
+
+    }
+
+    @Test
+    public void declare() throws InterruptedException {
+        Mono<String> mono1 = Mono.just("JavaSampleApproach.com");
+        Mono<String> mono2 = Mono.just("|Java Technology");
+        Mono<String> mono3 = Mono.just("|Spring Framework");
+
+        Flux<String> flux1 = Flux.just("{1}", "{2}", "{3}", "{4}");
+        Flux<String> flux2 = Flux.just("|A|", "|B|", "|C|");
+
+        // FLux emits item each 500ms
+        Flux<String> intervalFlux1 = Flux
+                .interval(Duration.ofMillis(500))
+                .zipWith(flux1, (i, string) -> string);
+
+        // FLux emits item each 700ms
+        Flux<String> intervalFlux2 = Flux
+                .interval(Duration.ofMillis(700))
+                .zipWith(flux2, (i, string) -> string);
+
+//        //
+//
+//        Flux.concat(mono1, mono3, mono2).subscribe(System.out::print);
+//        // JavaSampleApproach.com|Spring Framework|Java Technology
+//
+//        Flux.concat(flux2, flux1).subscribe(System.out::print);
+//        // |A||B||C|{1}{2}{3}{4}
+//
+//        Flux.concat(intervalFlux2, flux1).subscribe(System.out::print);
+//        Thread.sleep(3000);
+//        // |A||B||C|{1}{2}{3}{4}
+//        // each of |A|,|B|,|C| emits each 700ms, then {1},{2},{3},{4} emit immediately
+//
+        Flux.concat(intervalFlux2, intervalFlux1).subscribe( e -> {
+            System.out.printf("%s elem : %s \n", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")), e);
+        }); //System.out::println);
+        Thread.sleep(5000);
+        // |A||B||C|{1}{2}{3}{4}
+        // each of |A|,|B|,|C| emits each 700ms, then each of {1},{2},{3},{4} emits each 500ms
+//        Flux.concat(mono1, mono3, mono2).subscribe(System.out::print);
+//        // JavaSampleApproach.com|Spring Framework|Java Technology
+//
+//        Flux.concat(flux2, flux1).subscribe(System.out::print);
+//        // |A||B||C|{1}{2}{3}{4}
+//
+//        Flux.concat(intervalFlux2, flux1).subscribe(System.out::print);
+//        Thread.sleep(3000);
+//        // |A||B||C|{1}{2}{3}{4}
+//        // each of |A|,|B|,|C| emits each 700ms, then {1},{2},{3},{4} emit immediately
+//
+//        Flux.concat(intervalFlux2, intervalFlux1).subscribe(System.out::print);
+//        Thread.sleep(5000);
+//        // |A||B||C|{1}{2}{3}{4}
+//        // each of |A|,|B|,|C| emits each 700ms, then each of {1},{2},{3},{4} emits each 500ms
 
     }
 }
