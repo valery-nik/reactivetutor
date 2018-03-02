@@ -19,6 +19,26 @@
         <!--<relativePath/>-->
     </parent>
 
+    <properties>
+        <sspd.form.service.host>10.4.134.179</sspd.form.service.host>
+        <sspd.form.service.port>2222</sspd.form.service.port>
+        <sspd.form.service.scheme>http</sspd.form.service.scheme>
+        <sspd.regulation.service.host>10.4.134.179</sspd.regulation.service.host>
+        <sspd.regulation.service.port>8002</sspd.regulation.service.port>
+        <sspd.regulation.service.scheme>http</sspd.regulation.service.scheme>
+        <sspd.nsi.service.host>10.4.134.179</sspd.nsi.service.host>
+        <sspd.nsi.service.port>1111</sspd.nsi.service.port>
+        <sspd.nsi.service.scheme>http</sspd.nsi.service.scheme>
+        <sspd.formulas.service.host>10.4.134.179</sspd.formulas.service.host>
+        <sspd.formulas.service.port>8001</sspd.formulas.service.port>
+        <sspd.formulas.service.scheme>http</sspd.formulas.service.scheme>
+        <sspd.host>10.4.134.179</sspd.host>
+        <sspd.port>2222</sspd.port>
+        <sspd.scheme>http</sspd.scheme>
+        <sspd.userName>admin</sspd.userName>
+        <sspd.password>admin</sspd.password>
+    </properties>
+
     <dependencies>
         <!--<dependency>-->
             <!--<groupId>org.springframework.boot</groupId>-->
@@ -70,6 +90,30 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>ru.oz.tutorials.tick.TickApplication</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <echo>****Displaying sspd environment variables****</echo>
+                                <echo>[sspd.form.service.host] ${sspd.form.service.host}</echo>
+                                <echo>[sspd.form.service.port] ${sspd.form.service.port}</echo>
+                                <echo>[sspd.form.service.scheme] ${sspd.form.service.scheme}</echo>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
